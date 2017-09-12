@@ -5,6 +5,9 @@
   "scripts": {
     "start": "which nodemon > /dev/null && nodemon ./bin/www || node ./bin/www"
   },
+  "engines": {
+    "node": ">= 7.6.0"
+  },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.0",
