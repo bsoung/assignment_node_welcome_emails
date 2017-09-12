@@ -3,7 +3,7 @@ const EmailService = require('../services/email');
 
 router.get('/', (req, res, next) => {
 	let user = req.session.user;
-	res.render('new_email/index', { user });
+	res.render('new_email/index');
 });
 
 router.post('/new', (req, res, next) => {
@@ -20,7 +20,7 @@ router.post('/new', (req, res, next) => {
 	// };
 
 	const options = {
-		from: req.body.from,
+		from: req.session.user.email,
 		to: req.body.to,
 		subject: req.body.subject,
 		text: req.body.text,
