@@ -3,7 +3,7 @@ const { User } = require('../models');
 module.exports = {
 	index: async (req, res) => {
 		try {
-			const users = await User.find({ order: ['id'] });
+			const users = await User.find();
 
 			return res.json({
 				confirmation: 'success',
@@ -40,7 +40,7 @@ module.exports = {
 		let existingUser;
 		try {
 			existingUser = await User.findOne({
-				username: req.body.username
+				email: req.body.email
 			});
 
 			if (existingUser) {
@@ -53,11 +53,10 @@ module.exports = {
 			});
 		}
 
-		// create our user with random id
 		try {
 			let user = await User.create(req.body);
 
-			return res.redirect('/email');
+			return res.redirect('/dashboard');
 		} catch (e) {
 			console.error(e.stack);
 			return res.json({

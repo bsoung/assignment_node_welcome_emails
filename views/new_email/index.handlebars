@@ -1,0 +1,23 @@
+<div class="container">
+  <h1>Send an email</h1>
+
+  <form action="/email/new" method="post">
+    <input type="hidden" class="form-control" id="from" name="from" value="{{ user.email }}">
+
+    <div class="form-group">
+      <label for="to">To:</label>
+      <input type="email" class="form-control" id="to" name="to" required="true">
+    </div>
+    <div class="form-group">
+      <label for="subject">Subject:</label>
+      <input type="text" class="form-control" id="subject" name="subject" required="true">
+    </div>
+    <div class="form-group">
+      <label for="text">Text:</label>
+      <input type="text" class="form-control" id="text" name="text" required="true">
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+
+</div>

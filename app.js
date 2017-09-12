@@ -12,8 +12,24 @@ const passport = require('passport');
 const app = express();
 require('dotenv').config();
 
+// session
+app.use(
+	session({
+		cookie: { maxAge: 60000 },
+		secret: 'woot',
+		resave: false,
+		saveUninitialized: false
+	})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // bluebird mongoose
 mongoose.Promise = Promise;
+
+// passport
+const localAuth = require('./services/passport')(passport);
 
 // connect to mongoose
 const beginConnection = mongoose.connect(process.env.DB_URI, {
@@ -27,16 +43,6 @@ beginConnection
 	.catch(err => {
 		console.error(err);
 	});
-
-// session
-app.use(
-	session({
-		cookie: { maxAge: 60000 },
-		secret: 'woot',
-		resave: false,
-		saveUninitialized: false
-	})
-);
 
 // view engine setup
 app.engine(
@@ -58,17 +64,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
 app.use('/register', require('./routes/register'));
+app.use('/dashboard', require('./routes/dashboard'));
+app.use('/login', require('./routes/login'));
+app.use('/email', require('./routes/email'));
 app.use('/api', require('./routes/api'));
 
 // auth routes
 app.post(
 	'/login',
 	passport.authenticate('local-login', {
-		successRedirect: '/ponzvert',
-		failureRedirect: '/',
+		successRedirect: '/dashboard',
+		failureRedirect: '/login',
 		failureFlash: true
 	})
 );
+
+app.post('/logout', (req, res, next) => {
+	req.logout();
+
+	res.redirect('/');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

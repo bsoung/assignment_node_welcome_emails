@@ -17,12 +17,12 @@ module.exports = function(passport) {
         'local-login',
         new LocalStrategy(
             {
-                usernameField: 'username',
+                usernameField: 'email',
                 passwordField: 'password',
                 passReqToCallback: true
             },
             function(req, username, password, done) {
-                User.findOne({ username: username }, function(err, user) {
+                User.findOne({ email: username }, function(err, user) {
                     if (err) return done(err);
                     if (!user) {
                         return done(null, false);
@@ -32,6 +32,8 @@ module.exports = function(passport) {
                         return done(null, false);
                     }
 
+                    req.session.fname = user.fname;
+                    req.session.email = user.email;
                     return done(null, user);
                 });
             }

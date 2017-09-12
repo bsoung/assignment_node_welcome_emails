@@ -1,3 +1,10 @@
 <div class="container">
-	<h1>User dashboard</h1>
+	<h1>{{ result.name }}'s dashboard</h1>
+	<p>List of emails</p>
+	{{#each result.users as |user|}}
+		<div>
+			<a href="/email">{{user.email}}</a>
+		</div>
+	{{/each}}
+	<button class="btn btn-danger"><a href="/logout">Logout</a></button>
 </div>
