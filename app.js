@@ -6,8 +6,27 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('express-flash-messages');
 const exphbs = require('express-handlebars');
+const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const passport = require('passport');
 const app = express();
 require('dotenv').config();
+
+// bluebird mongoose
+mongoose.Promise = Promise;
+
+// connect to mongoose
+const beginConnection = mongoose.connect(process.env.DB_URI, {
+	useMongoClient: true
+});
+
+beginConnection
+	.then(db => {
+		console.log('DB CONNECTION SUCCESS');
+	})
+	.catch(err => {
+		console.error(err);
+	});
 
 // session
 app.use(
@@ -38,7 +57,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
-app.use('/registration', require('./routes/registration'));
+app.use('/register', require('./routes/register'));
+app.use('/api', require('./routes/api'));
+
+// auth routes
+app.post(
+	'/login',
+	passport.authenticate('local-login', {
+		successRedirect: '/ponzvert',
+		failureRedirect: '/',
+		failureFlash: true
+	})
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

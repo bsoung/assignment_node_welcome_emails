@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-	res.render('users_new/index');
+	res.render('register/index');
 });
 
 router.post('/new', (req, res, next) => {
