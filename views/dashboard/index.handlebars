@@ -6,5 +6,7 @@
 			<a href="/email">{{user.email}}</a>
 		</div>
 	{{/each}}
-	<button class="btn btn-danger"><a href="/logout">Logout</a></button>
+	<form action="/logout" method="post">
+		<button class="btn btn-danger">Logout</button>
+	</form>
 </div>
