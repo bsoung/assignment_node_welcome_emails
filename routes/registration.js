@@ -7,7 +7,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/new', (req, res, next) => {
-	console.log(req.body, 'this is the req');
 	const options = {
 		from: 'soungbenjamin@gmail.com',
 		to: req.body.email,
@@ -22,10 +21,17 @@ router.post('/new', (req, res, next) => {
 
 	EmailService.send(options)
 		.then(result => {
-			const parsedResult = {};
+			let parsedResult = {};
 			req.flash('success', 'Sent!');
-			parsedResult.to = result.envelope.to;
-			parsedResult.from = result.envelope.from;
+
+			if (result.envelope) {
+				parsedResult.to = result.envelope.to;
+				parsedResult.from = result.envelope.from;
+			} else {
+				parsedResult =
+					result.message[0].toUpperCase() + result.message.slice(1);
+			}
+
 			res.render('emails/index', { parsedResult });
 		})
 		.catch(next);

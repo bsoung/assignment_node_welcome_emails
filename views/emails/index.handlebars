@@ -1,6 +1,16 @@
+{{log result}}
+
+{{#if parsedResult.to}}
 <div class="container">
 	<h4>Email message sent successfully!</h4>
 	<div class="alert alert-success">
 		<strong>From:</strong> {{ parsedResult.to }} <strong>to:</strong> {{ parsedResult.from }}
 	</div>
 </div>
+{{else}}
+<div class="container">
+	<div class="alert alert-success">
+		<h4>{{ parsedResult }}! Email message was sent.</h4>
+	</div>
+</div>
+{{/if}}
